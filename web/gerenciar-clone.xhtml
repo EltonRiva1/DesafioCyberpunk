@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+             template="template.xhtml"
+             xmlns:sc="http://xmlns.jcp.org/jsf/composite/sccomp">
+    <h:form>
+        <p:messages autoUpdate="true"></p:messages>
+        <p:fieldset legend="Clones">
+            <sc:toolbarCrud crudBean="#{cloneBean}">
+            </sc:toolbarCrud>
+            <p:panelGrid columns="2" rendered="#{cloneBean.busca == false}">
+                <h:outputLabel value="Nome"></h:outputLabel>
+                <p:inputText value="#{cloneBean.entidade.nome}" validatorMessage="Formato inválido. Considere, por exemplo: AAA9999">
+                    <f:validateRegex pattern="[A-Z]{3}[0-9]{4}" ></f:validateRegex>
+                </p:inputText>
+                <h:outputLabel value="Idade"></h:outputLabel>
+                <p:spinner value="#{cloneBean.entidade.idade}" min="10" max="20"></p:spinner>
+                <h:outputLabel value="Data de criação"></h:outputLabel>
+                <p:calendar value="#{cloneBean.entidade.dataDeCriacao}" disabled="true"></p:calendar>
+                <h:outputLabel value="Adicionais"></h:outputLabel>
+                <p:selectManyCheckbox id="grid" value="#{cloneBean.entidade.adicionais}" layout="grid" columns="3">
+                    <f:selectItem itemValue="braço mecânico" itemLabel="braço mecânico"/>
+                    <f:selectItem itemValue="esqueleto reforçado" itemLabel="esqueleto reforçado"/>
+                    <f:selectItem itemValue="sentidos aguçados" itemLabel="sentidos aguçados"/>
+                    <f:selectItem itemValue="pele adaptativa" itemLabel="pele adaptativa"/>
+                    <f:selectItem itemValue="raio laser" itemLabel="raio laser"/>
+                </p:selectManyCheckbox>
+            </p:panelGrid>
+            <p:dataTable value="#{cloneBean.entidades}" var="clone" rendered="#{cloneBean.busca == true}">
+                <p:column>
+                    <p:commandButton value="Editar" action="#{cloneBean.editar(clone)}" update="@form"></p:commandButton>
+                    <p:commandButton value="Deletar" action="#{cloneBean.deletar(clone)}" update="@form"></p:commandButton>
+                </p:column>
+                <p:column headerText="Nome" sortBy="#{clone.nome}">
+                    <h:outputText value="#{clone.nome}"></h:outputText>
+                </p:column>
+                <p:column headerText="Idade" sortBy="#{clone.idade}">
+                    <h:outputText value="#{clone.idade}"></h:outputText>
+                </p:column>
+                <p:column headerText="Data de Criação" sortBy="#{clone.dataDeCriacao}">
+                    <h:outputText value="#{clone.dataDeCriacao}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Adicionais" sortBy="#{clone.adicionais}">
+                    <h:outputText value="#{clone.adicionais}"></h:outputText>
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
+    </h:form>
+</ui:decorate>
